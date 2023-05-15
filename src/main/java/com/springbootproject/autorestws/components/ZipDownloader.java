@@ -15,7 +15,8 @@ import java.util.Collections;
 @Component
 public class ZipDownloader {
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     public ZipDownloader(RestTemplate restTemplate) {
