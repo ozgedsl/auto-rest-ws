@@ -1,10 +1,10 @@
 package com.springbootproject.autorestws.controller;
 
 import com.springbootproject.autorestws.model.GenerateProjectRequestModel;
-import com.springbootproject.autorestws.service.GenerateAutoWsService;
+import com.springbootproject.autorestws.service.abstracts.JsonService;
+import com.springbootproject.autorestws.service.concretes.GenerateAutoWsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +17,20 @@ public class TestController {
     @Autowired
     private GenerateAutoWsService generateAutoWsService;
 
+    @Autowired
+    private JsonService jsonService;
+
     @PostMapping("/generate-project")
-    public void execute(GenerateProjectRequestModel generateProjectRequestModel){
+    public void execute(GenerateProjectRequestModel generateProjectRequestModel) {
         try {
             generateAutoWsService.execute(generateProjectRequestModel);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
+    }
+
+    @PostMapping("/jsonToProject")
+    public Object jsonToProject(String json) {
+        return jsonService.jsonToJavaClass(json);
     }
 }

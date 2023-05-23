@@ -1,23 +1,23 @@
-package com.springbootproject.autorestws.service;
+package com.springbootproject.autorestws.service.concretes;
 
 import com.springbootproject.autorestws.components.ZipDownloader;
 import com.springbootproject.autorestws.model.GenerateProjectRequestModel;
-import com.springbootproject.autorestws.utils.UnzipUtility;
+import com.springbootproject.autorestws.service.abstracts.ProjectGenerateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Slf4j
 @Service
-public class GenerateAutoWsService {
+@Slf4j
+public class ProjectGenerateServiceImpl implements ProjectGenerateService {
 
     @Autowired
     private ZipDownloader zipDownloader;
 
-    public void execute(GenerateProjectRequestModel generateProjectRequestModel) throws IOException {
-
+    @Override
+    public Object springInitGenerateProject(GenerateProjectRequestModel generateProjectRequestModel) {
         String queryForURL = "type="+generateProjectRequestModel.getType()
                 +"&language="+generateProjectRequestModel.getLanguage()
                 +"&platformVersion="+generateProjectRequestModel.getPlatformVersion()
@@ -30,7 +30,14 @@ public class GenerateAutoWsService {
                 +"&packageName="+generateProjectRequestModel.getPackageName()
                 +"";
 
-        zipDownloader.downloadZipFile("https://start.spring.io/starter.zip?" + queryForURL, generateProjectRequestModel.getFileName()+".zip");
-        log.info("Created Project.");
+        try {
+            zipDownloader.downloadZipFile("https://start.spring.io/starter.zip?" + queryForURL, generateProjectRequestModel.getFileName()+".zip");
+            log.info("Created Project.");
+            return "ok";
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            return "not ok";
+        }
+
     }
 }
