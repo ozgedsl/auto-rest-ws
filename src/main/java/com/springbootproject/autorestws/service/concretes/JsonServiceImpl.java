@@ -20,10 +20,10 @@ public class JsonServiceImpl implements JsonService {
 
 
     @Override
-    public String jsonToJavaClass(String json) {
+    public String jsonToJavaClass(String json,String path) {
         try {
             JCodeModel jcodeModel = new JCodeModel();
-            String javaClassName = "Model";
+            String javaClassName = "Customers";
             String packageName = "model";
 
             GenerationConfig config = new DefaultGenerationConfig() {
@@ -41,12 +41,12 @@ public class JsonServiceImpl implements JsonService {
             SchemaMapper mapper = new SchemaMapper(new RuleFactory(config, new Jackson2Annotator(config), new SchemaStore()), new SchemaGenerator());
             mapper.generate(jcodeModel, javaClassName, packageName,json);
 
-            jcodeModel.build(new File("C:\\Users\\serafettin.altuntas\\Desktop\\json"));
+            jcodeModel.build(new File(path));
 
             return "ok";
     } catch (Exception e){
             log.error(e.getMessage(),e);
-            return "notok";
+            return "not ok";
         }
 
     }

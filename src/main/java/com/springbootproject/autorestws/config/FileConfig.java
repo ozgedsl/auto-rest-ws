@@ -9,4 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class FileConfig {
     private String filePath;
+    public  static  final String BASE_PATH = "C:\\Users\\serafettin.altuntas\\Desktop\\ws-projects";
+    public  static  final String MODULE = "testapi";
+    public  static  final String GROUP_NAME = "rest";
+    public  static  final String PACKAGE_NAME = "demo";
 }

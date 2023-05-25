@@ -1,7 +1,7 @@
-package com.restapi.${projectName}.controller;
+package com.rest.${package}.controller;
 
 import org.springframework.web.bind.annotation.*;
-import com.restapi.${projectName}.service.*;
+import com.rest.${package}.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MainController {
 
 @Autowired
-public {projectName}Service service;
+public CustomerService service;
 
 
-@${MethodType}("/${get}${jsonModelParentName}")
+@${MethodType}("/get${jsonModelParentName}")
 public ${fieldType} get${jsonModelParentName}(){
 
 return service.execute();

@@ -1,12 +1,16 @@
 package com.springbootproject.autorestws.service.concretes;
 
 import com.springbootproject.autorestws.components.ZipDownloader;
+import com.springbootproject.autorestws.config.FileConfig;
 import com.springbootproject.autorestws.model.GenerateProjectRequestModel;
+import com.springbootproject.autorestws.service.abstracts.JsonService;
+import com.springbootproject.autorestws.utils.FileUtility;
 import com.springbootproject.autorestws.utils.UnzipUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -16,21 +20,37 @@ public class GenerateAutoWsService {
     @Autowired
     private ZipDownloader zipDownloader;
 
-    public void execute(GenerateProjectRequestModel generateProjectRequestModel) throws IOException {
+    @Autowired
+    private SpringInitilazr springInitilazr;
 
-        String queryForURL = "type="+generateProjectRequestModel.getType()
-                +"&language="+generateProjectRequestModel.getLanguage()
-                +"&platformVersion="+generateProjectRequestModel.getPlatformVersion()
-                +"&packaging="+generateProjectRequestModel.getPackaging()
-                +"&jvmVersion="+generateProjectRequestModel.getJvmVersion()
-                +"&groupId="+generateProjectRequestModel.getGroupId()
-                +"&artifactId="+generateProjectRequestModel.getArtifactId()
-                +"&name="+generateProjectRequestModel.getName()
-                +"&description="+generateProjectRequestModel.getDescription()
-                +"&packageName="+generateProjectRequestModel.getPackageName()
-                +"";
+    @Autowired
+    private JsonService jsonService;
 
-        zipDownloader.downloadZipFile("https://start.spring.io/starter.zip?" + queryForURL, generateProjectRequestModel.getFileName()+".zip");
-        log.info("Created Project.");
+    @Autowired
+    private TemplateService templateService;
+
+    public void execute(GenerateProjectRequestModel generateProjectRequestModel)  {
+
+        String projectName = generateProjectRequestModel.getProjectName();
+
+        String jsonModel = generateProjectRequestModel.getJson();
+        try{
+            springInitilazr.execute(projectName,jsonModel);
+            templateService.generateController(projectName);
+            templateService.generateService(projectName);
+            generateModel(projectName,jsonModel);
+
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
+    }
+
+    public void generateModel(String projectName, String json) {
+
+
+        new File(String.format(FileConfig.BASE_PATH + "\\projects\\%s\\src\\main\\java\\com\\rest\\customer", projectName)).mkdirs();
+        String path = String.format(FileConfig.BASE_PATH + "\\projects\\%s\\src\\main\\java\\com\\rest\\customer", projectName);
+        new File(path, "model").mkdirs();
+        jsonService.jsonToJavaClass(json, path);
     }
 }

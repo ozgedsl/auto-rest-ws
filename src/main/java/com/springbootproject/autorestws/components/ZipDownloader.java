@@ -32,7 +32,7 @@ public class ZipDownloader {
 
         if (response.getStatusCode() == HttpStatus.OK) {
             ByteArrayResource resource = new ByteArrayResource(response.getBody());
-            Path path = Paths.get("C:\\Users\\ozgenur.dasli\\MyProjects\\auto-rest-ws\\src\\main\\java\\com\\springbootproject\\autorestws\\file\\" +fileName);
+            Path path = Paths.get("C:\\Users\\serafettin.altuntas\\Desktop\\ws-projects\\zip" +fileName);
             FileOutputStream fos = new FileOutputStream(path.toFile());
             fos.write(resource.getByteArray());
             fos.close();

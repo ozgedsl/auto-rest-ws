@@ -1,0 +1,13 @@
+type: maven-project
+language: java
+bootVersion: 2.5.0
+groupId: com.restapi
+artifactId: demo
+name: project
+description: Demo rest project
+packageName: com.rest.customer
+packaging: jar
+javaVersion: 17
+dependencies:
+  - name: web
+  - name: lombok

@@ -18,25 +18,27 @@ public class ProjectGenerateServiceImpl implements ProjectGenerateService {
 
     @Override
     public Object springInitGenerateProject(GenerateProjectRequestModel generateProjectRequestModel) {
-        String queryForURL = "type="+generateProjectRequestModel.getType()
-                +"&language="+generateProjectRequestModel.getLanguage()
-                +"&platformVersion="+generateProjectRequestModel.getPlatformVersion()
-                +"&packaging="+generateProjectRequestModel.getPackaging()
-                +"&jvmVersion="+generateProjectRequestModel.getJvmVersion()
-                +"&groupId="+generateProjectRequestModel.getGroupId()
-                +"&artifactId="+generateProjectRequestModel.getArtifactId()
-                +"&name="+generateProjectRequestModel.getName()
-                +"&description="+generateProjectRequestModel.getDescription()
-                +"&packageName="+generateProjectRequestModel.getPackageName()
-                +"";
+        String queryForURL = "";
+//        type="+generateProjectRequestModel.getType()
+//                +"&language="+generateProjectRequestModel.getLanguage()
+//                +"&platformVersion="+generateProjectRequestModel.getPlatformVersion()
+//                +"&packaging="+generateProjectRequestModel.getPackaging()
+//                +"&jvmVersion="+generateProjectRequestModel.getJvmVersion()
+//                +"&groupId="+generateProjectRequestModel.getGroupId()
+//                +"&artifactId="+generateProjectRequestModel.getArtifactId()
+//                +"&name="+generateProjectRequestModel.getName()
+//                +"&description="+generateProjectRequestModel.getDescription()
+//                +"&packageName="+generateProjectRequestModel.getPackageName()
+//                +"";
 
         try {
-            zipDownloader.downloadZipFile("https://start.spring.io/starter.zip?" + queryForURL, generateProjectRequestModel.getFileName()+".zip");
+                zipDownloader.downloadZipFile("https://start.spring.io/starter.zip?" + queryForURL, ""+".zip");
             log.info("Created Project.");
             return "ok";
         }catch (Exception e){
             log.error(e.getMessage(),e);
             return "not ok";
+
         }
 
     }

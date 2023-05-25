@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface JsonService {
 
-    String jsonToJavaClass(String json);
+    String jsonToJavaClass(String json,String path);
 
 }
