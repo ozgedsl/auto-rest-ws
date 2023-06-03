@@ -2,8 +2,10 @@ package com.springbootproject.autorestws.service.concretes;
 
 import com.springbootproject.autorestws.components.ZipDownloader;
 import com.springbootproject.autorestws.config.FileConfig;
+import com.springbootproject.autorestws.model.BotRequest;
 import com.springbootproject.autorestws.model.GenerateProjectRequestModel;
 import com.springbootproject.autorestws.service.abstracts.JsonService;
+import com.springbootproject.autorestws.utils.CommandUtils;
 import com.springbootproject.autorestws.utils.FileUtility;
 import com.springbootproject.autorestws.utils.UnzipUtility;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +30,22 @@ public class GenerateAutoWsService {
 
     @Autowired
     private TemplateService templateService;
+    @Autowired
+    private GptTest gptTest;
 
     public void execute(GenerateProjectRequestModel generateProjectRequestModel)  {
 
         String projectName = generateProjectRequestModel.getProjectName();
-
-        String jsonModel = generateProjectRequestModel.getJson();
+        BotRequest request = new BotRequest();
+        request.setMessage(generateProjectRequestModel.getJson());
+        String jsonModel = gptTest.testGpt(request);
+        String path = String.format(FileConfig.BASE_PATH + "\\projects\\%s", projectName);
         try{
             springInitilazr.execute(projectName,jsonModel);
             templateService.generateController(projectName);
             templateService.generateService(projectName);
             generateModel(projectName,jsonModel);
+
 
         }catch (Exception e){
             log.error(e.getMessage(),e);
